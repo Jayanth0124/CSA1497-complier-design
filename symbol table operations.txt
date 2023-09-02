@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_SYMBOLS 100
+
+typedef struct {
+    char name[20];
+    int address;
+} Symbol;
+
+Symbol symbolTable[MAX_SYMBOLS];
+int symbolCount = 0;
+
+void insertSymbol(const char *name, int address) {
+    if (symbolCount < MAX_SYMBOLS) {
+        strcpy(symbolTable[symbolCount].name, name);
+        symbolTable[symbolCount].address = address;
+        symbolCount++;
+        printf("Symbol inserted successfully.\n");
+    } else {
+        printf("Symbol table is full. Cannot insert more symbols.\n");
+    }
+}
+
+int main() {
+    char name[20];
+    int address;
+
+    printf("Enter symbol name: ");
+    scanf("%s", name);
+
+    printf("Enter address: ");
+    scanf("%d", &address);
+
+    insertSymbol(name, address);
+
+    return 0;
+}

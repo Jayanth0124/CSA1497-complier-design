@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_QUADRUPLES 100
+
+typedef struct Quadruple {
+    char op;
+    char arg1[10];
+    char arg2[10];
+    char result[10];
+} Quadruple;
+
+Quadruple quadruples[MAX_QUADRUPLES];
+int nextQuad = 0;
+
+void generateQuadruple(char op, const char *arg1, const char *arg2, const char *result) {
+    Quadruple q;
+    q.op = op;
+    strcpy(q.arg1, arg1);
+    strcpy(q.arg2, arg2);
+    strcpy(q.result, result);
+    quadruples[nextQuad++] = q;
+}
+
+void printQuadruples() {
+    printf("Quadruples:\n");
+    for (int i = 0; i < nextQuad; i++) {
+        printf("%d: (%c, %s, %s, %s)\n", i, quadruples[i].op, quadruples[i].arg1, quadruples[i].arg2, quadruples[i].result);
+    }
+}
+
+int main() {
+    char op, arg1[10], arg2[10], result[10];
+    printf("Enter an arithmetic operation (+, -, *, /): ");
+    scanf(" %c", &op);
+    printf("Enter arguments and result: ");
+    scanf("%s %s %s", arg1, arg2, result);
+
+    generateQuadruple(op, arg1, arg2, result);
+
+    printQuadruples();
+
+    return 0;
+}

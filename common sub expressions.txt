@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int main() {
+    int a, b, c, d, e, f;
+
+    printf("Enter six integer values (a, b, c, d, e, f): ");
+    scanf("%d %d %d %d %d %d", &a, &b, &c, &d, &e, &f);
+
+    int result1 = (a + b) * c;
+    int result2 = (a + b) * d;
+    int result3 = (c + d) * e;
+    int result4 = (c + d) * f;
+
+    printf("Result 1: %d\n", result1);
+    printf("Result 2: %d\n", result2);
+    printf("Result 3: %d\n", result3);
+    printf("Result 4: %d\n", result4);
+
+    return 0;
+}

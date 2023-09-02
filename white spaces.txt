@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+int main() {
+    int whitespaceCount = 0;
+    int newlineCount = 0;
+
+    char c;
+    printf("Enter some text (Ctrl+D to end input):\n");
+
+    while ((c = getchar()) != EOF) {
+        if (c == ' ' || c == '\t') {
+            whitespaceCount++;
+        } else if (c == '\n') {
+            newlineCount++;
+        }
+    }
+
+    printf("Number of whitespaces: %d\n", whitespaceCount);
+    printf("Number of newline characters: %d\n", newlineCount);
+
+    return 0;
+}

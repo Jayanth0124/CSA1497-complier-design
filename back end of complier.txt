@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define STACK_SIZE 100
+
+typedef struct {
+    char data[STACK_SIZE];
+    int top;
+} Stack;
+
+void push(Stack *stack, char item) {
+    if (stack->top < STACK_SIZE - 1) {
+        stack->data[++stack->top] = item;
+    } else {
+        printf("Stack Overflow\n");
+        exit(1);
+    }
+}
+
+char pop(Stack *stack) {
+    if (stack->top >= 0) {
+        return stack->data[stack->top--];
+    } else {
+        printf("Stack Underflow\n");
+        exit(1);
+    }
+}
+
+int main() {
+    Stack stack;
+    stack.top = -1;
+
+    char input[100];
+    printf("Enter a postfix expression: ");
+    scanf("%s", input);
+
+    for (int i = 0; input[i] != '\0'; i++) {
+        char token = input[i];
+
+        if (isdigit(token)) {
+            push(&stack, token);
+        } else if (token == '+' || token == '-' || token == '*' || token == '/') {
+            char operand2 = pop(&stack);
+            char operand1 = pop(&stack);
+
+            printf("LOAD %c\n", operand1);
+            printf("LOAD %c\n", operand2);
+
+            switch (token) {
+                case '+':
+                    printf("ADD\n");
+                    break;
+                case '-':
+                    printf("SUB\n");
+                    break;
+                case '*':
+                    printf("MUL\n");
+                    break;
+                case '/':
+                    printf("DIV\n");
+                    break;
+            }
+
+            char temp = 'T'; // Temporary variable name
+            push(&stack, temp);
+            printf("STORE %c\n", temp);
+        }
+    }
+
+    char result = pop(&stack);
+    printf("Result: %c\n", result);
+
+    return 0;
+}

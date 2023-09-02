@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+int main() {
+    char input[100];
+
+    printf("Enter a line of text: ");
+    fgets(input, sizeof(input), stdin);
+
+    // Check if the input starts with "//" (single-line comment)
+    if (strncmp(input, "//", 2) == 0) {
+        printf("You entered a single-line comment.\n");
+    }
+    // Check if the input starts with "/*" (multi-line comment)
+    else if (strncmp(input, "/*", 2) == 0) {
+        printf("You entered the start of a multi-line comment.\n");
+    }
+    // Check if the input ends with "*/" (end of multi-line comment)
+    else if (strlen(input) >= 2 && strcmp(input + strlen(input) - 3, "*/\n") == 0) {
+        printf("You entered the end of a multi-line comment.\n");
+    }
+    // Otherwise, treat the input as code
+    else {
+        printf("You entered code or a non-standard comment.\n");
+    }
+
+    return 0;
+}

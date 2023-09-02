@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+int main() {
+    char c, prev = '\0';
+    bool inComment = false;
+
+    printf("Enter your C code (Ctrl+D to end):\n");
+
+    while ((c = getchar()) != EOF) {
+        if (inComment) {
+            if (prev == '*' && c == '/') {
+                inComment = false;
+            }
+        } else {
+            if (prev == '/' && c == '/') {
+                // Ignore characters until a newline
+                while ((c = getchar()) != EOF && c != '\n') {}
+            } else if (prev == '/' && c == '*') {
+                inComment = true;
+                prev = c;
+                continue;
+            } else if (c != ' ' && c != '\t') {
+                putchar(c);
+            } else if (prev != ' ' && prev != '\t') {
+                putchar(' ');
+            }
+        }
+
+        prev = c;
+    }
+
+    return 0;
+}

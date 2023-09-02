@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <string.h>
+
+// Define a structure for a production rule
+struct Production {
+    char nonTerminal;
+    char *rhs;
+};
+
+// Function to check if a grammar is ambiguous
+int isAmbiguous(struct Production productions[], int numProductions, char input[]) {
+    // Implement your ambiguity checking logic here
+    return 0; // Placeholder return value
+}
+
+int main() {
+    // Define the grammar productions
+    struct Production productions[] = {
+        {'E', "E + E"},
+        {'E', "E * E"},
+        {'E', "( E )"},
+        {'E', "id"}
+    };
+    int numProductions = sizeof(productions) / sizeof(productions[0]);
+
+    // Define an input string
+    char input[] = "id + id * id";
+
+    // Check for ambiguity
+    if (isAmbiguous(productions, numProductions, input)) {
+        printf("The grammar is ambiguous.\n");
+    } else {
+        printf("The grammar is not ambiguous.\n");
+    }
+
+    return 0;
+}

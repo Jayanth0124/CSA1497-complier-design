@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define MAX_PRODUCTIONS 10
+#define MAX_FOLLOW 10
+
+bool is_terminal(char symbol, char terminals[], int num_terminals) {
+    for (int i = 0; i < num_terminals; i++) {
+        if (terminals[i] == symbol) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void calculate_follow(char non_terminal, char grammar[][4], char terminals[], int num_terminals) {
+    printf("FOLLOW(%c) = { ", non_terminal);
+
+    for (int i = 0; i < MAX_PRODUCTIONS; i++) {
+        char *production = grammar[i];
+        for (int j = 0; production[j] != '\0'; j++) {
+            if (production[j] == non_terminal) {
+                if (production[j + 1] != '\0' && is_terminal(production[j + 1], terminals, num_terminals)) {
+                    printf("%c ", production[j + 1]);
+                }
+            }
+        }
+    }
+
+    printf("}\n");
+}
+
+int main() {
+    char grammar[MAX_PRODUCTIONS][4];
+    char terminals[MAX_FOLLOW];
+    int num_terminals = 0;
+    char non_terminal;
+
+    printf("Enter the non-terminal: ");
+    scanf(" %c", &non_terminal);
+
+    printf("Enter the number of terminals: ");
+    scanf("%d", &num_terminals);
+
+    printf("Enter the terminals: ");
+    for (int i = 0; i < num_terminals; i++) {
+        scanf(" %c", &terminals[i]);
+    }
+
+    printf("Enter the grammar productions (use '$' for epsilon):\n");
+    for (int i = 0; i < MAX_PRODUCTIONS; i++) {
+        scanf("%s", grammar[i]);
+    }
+
+    calculate_follow(non_terminal, grammar, terminals, num_terminals);
+
+    return 0;
+}

@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+char parsingTable[6][7][20] = {
+    {"", "", "T E'", "", "", "T E'", ""},
+    {"E -> T E'", "", "", "", "ε", "", "ε"},
+    {"", "", "F T'", "", "", "F T'", ""},
+    {"T' -> ε", "T -> F T'", "", "T' -> ε", "", "T' -> ε", "T' -> ε"},
+    {"", "", "F -> ( E )", "", "", "F -> id", ""},
+};
+
+void parseInput(char *input) {
+    char stack[100];
+    int top = 0;
+    stack[top] = '$';
+    stack[++top] = 'E';
+
+    printf("Parsing Steps:\n");
+
+    char lookahead = *input;
+
+    while (stack[top] != '$') {
+        char currentSymbol = stack[top];
+
+        if (isupper(currentSymbol)) {
+            int row = currentSymbol - 'E';
+            int column = (lookahead == '+') ? 1 : (lookahead == '*') ? 2 :
+                         (lookahead == '(') ? 3 : (lookahead == ')') ? 4 :
+                         (islower(lookahead) || lookahead == '$') ? 5 : 0;
+
+            if (strcmp(parsingTable[row][column], "") != 0) {
+                printf("%s\n", parsingTable[row][column]);
+                top--;
+                for (int i = strlen(parsingTable[row][column]) - 1; i >= 4; i--) {
+                    if (parsingTable[row][column][i] != 'ε') {
+                        stack[++top] = parsingTable[row][column][i];
+                    }
+                }
+            } else {
+                printf("Error: Cannot parse input.\n");
+                return;
+            }
+        } else if (currentSymbol == lookahead) {
+            printf("Matched %c\n", lookahead);
+            top--;
+            lookahead = *(++input);
+        } else {
+            printf("Error: Cannot parse input.\n");
+            return;
+        }
+    }
+
+    printf("Parsing Successful.\n");
+}
+
+int main() {
+    char input[100];
+    printf("Enter an expression (with $ at the end): ");
+    scanf("%s", input);
+
+    parseInput(input);
+
+    return 0;
+}

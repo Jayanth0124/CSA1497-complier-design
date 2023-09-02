@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <string.h>
+
+#define NUM_STATES 2
+#define NUM_SYMBOLS 2
+
+typedef enum {
+    SYMBOL_a,
+    SYMBOL_b,
+    SYMBOL_END,
+    SYMBOL_S,
+    SYMBOL_A
+} Symbol;
+
+typedef enum {
+    ACTION_SHIFT,
+    ACTION_REDUCE,
+    ACTION_ACCEPT,
+    ACTION_ERROR
+} ActionType;
+
+typedef struct {
+    ActionType type;
+    int value;
+} Action;
+
+Action parsingTable[NUM_STATES][NUM_SYMBOLS] = {
+    {{ACTION_SHIFT, 1}, {ACTION_ERROR}},
+    {{ACTION_ERROR}, {ACTION_ACCEPT}}
+};
+
+int main() {
+    char input[100];
+    printf("Enter the input string: ");
+    scanf("%s", input);
+
+    int stateStack[100];
+    int top = 0;
+    stateStack[top] = 0;
+    int currentSymbol = 0;
+
+    while (1) {
+        int currentState = stateStack[top];
+        Symbol currentInputSymbol = (input[currentSymbol] == 'a') ? SYMBOL_a : SYMBOL_END;
+
+        Action action = parsingTable[currentState][currentInputSymbol];
+
+        switch (action.type) {
+            case ACTION_SHIFT:
+                stateStack[++top] = action.value;
+                currentSymbol++;
+                break;
+
+            case ACTION_REDUCE:
+                // Perform reduction and state transition
+                break;
+
+            case ACTION_ACCEPT:
+                printf("Input string is accepted.\n");
+                return 0;
+
+            case ACTION_ERROR:
+                printf("Input string is not accepted.\n");
+                return 1;
+        }
+    }
+
+    return 0;
+}

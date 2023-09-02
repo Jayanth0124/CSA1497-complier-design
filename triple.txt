@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_TRIPLES 100
+
+typedef struct Triple {
+    char op;
+    char arg1[10];
+    char arg2[10];
+    char result[10];
+} Triple;
+
+Triple triples[MAX_TRIPLES];
+int nextTriple = 0;
+
+void generateTriple(char op, const char *arg1, const char *arg2, const char *result) {
+    Triple t;
+    t.op = op;
+    strcpy(t.arg1, arg1);
+    strcpy(t.arg2, arg2);
+    strcpy(t.result, result);
+    triples[nextTriple++] = t;
+}
+
+void printTriples() {
+    printf("Triples:\n");
+    for (int i = 0; i < nextTriple; i++) {
+        printf("(%c, %s, %s, %s)\n", triples[i].op, triples[i].arg1, triples[i].arg2, triples[i].result);
+    }
+}
+
+int main() {
+    char op, arg1[10], arg2[10], result[10];
+    printf("Enter an arithmetic operation (+, -, *, /): ");
+    scanf(" %c", &op);
+    printf("Enter arguments and result: ");
+    scanf("%s %s %s", arg1, arg2, result);
+
+    generateTriple(op, arg1, arg2, result);
+
+    printTriples();
+
+    return 0;
+}

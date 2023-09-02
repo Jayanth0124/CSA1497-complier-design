@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+
+#define STACK_SIZE 100
+
+char stack[STACK_SIZE];
+int top = -1;
+
+void push(char item) { stack[++top] = item; }
+char pop() { return stack[top--]; }
+
+int main() {
+    char input[100];
+    printf("Enter an arithmetic expression: ");
+    scanf("%s", input);
+
+    int i = 0;
+    while (input[i] != '\0') {
+        if (input[i] == '+') { push('E'); i++; }
+        else if (input[i] == '*') { push('T'); i++; }
+        else if (input[i] == ')') {
+            if (stack[top - 1] == 'E') { pop(); pop(); pop(); push('E'); }
+            else if (stack[top - 1] == 'T') { pop(); pop(); pop(); push('T'); }
+            else if (stack[top - 2] == 'E' && stack[top - 1] == '+' && stack[top] == 'T') { pop(); pop(); pop(); push('E'); }
+            else if (stack[top - 2] == 'T' && stack[top - 1] == '*' && stack[top] == 'F') { pop(); pop(); pop(); push('T'); }
+            i++;
+        } else { push(input[i]); i++; }
+    }
+
+    while (top >= 2) {
+        if (stack[top - 2] == 'E' && stack[top - 1] == '+' && stack[top] == 'T') { pop(); pop(); pop(); push('E'); }
+        else if (stack[top - 2] == 'T' && stack[top - 1] == '*' && stack[top] == 'F') { pop(); pop(); pop(); push('T'); }
+        else { printf("Error in parsing\n"); return 1; }
+    }
+
+    if (top == 0 && stack[top] == 'E') { printf("Parsing successful\n"); }
+    else { printf("Error in parsing\n"); }
+
+    return 0;
+}
